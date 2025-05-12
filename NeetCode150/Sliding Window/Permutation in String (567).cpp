@@ -5,38 +5,34 @@ class Solution {
     public:
         bool checkInclusion(string s1, string s2) {
             if(s1.size() > s2.size())   return false;
-            unordered_map<char, int> substr_freq, window_freq;
+            vector<int> substr_freq(26), window_freq(26);
+
             int matches = 0; // How many letters of the window match the substr in frequency 
-
-            for(char c: s1) substr_freq[c]++;
-
             int l = 0, r = 0;
-            for(; r < s1.size(); r++) window_freq[s2[r]]++;
-
-            for(const auto& p: window_freq){
-                if(substr_freq.find(p.first) != substr_freq.end() && window_freq[p.first] == substr_freq[p.first]){
-                    matches++;
-                }
+            
+            for(; r < s1.size(); r++){
+                substr_freq[s1[r] - 'a']++;
+                window_freq[s2[r] - 'a']++;
+            }
+            for(int i = 0; i < 26; i++){
+                if(window_freq[i] == substr_freq[i])    matches++;
             }
 
             for(; r < s2.size(); r++){
-                if(matches == substr_freq.size())   return true;
+                if(matches == 26)   return true;
 
-                char c = s2[r];
+                char c = s2[r] - 'a';
                 window_freq[c]++;
-                if(substr_freq.find(c) != substr_freq.end()){
-                    if(window_freq[c] == substr_freq[c])    matches++;
-                    else if(window_freq[c] == substr_freq[c] + 1)    matches--;
-                }
+                if(window_freq[c] == substr_freq[c])    matches++;
+                else if(window_freq[c] == substr_freq[c] + 1)    matches--;
 
-                window_freq[s2[l]]--;
-                if(substr_freq.find(s2[l]) != substr_freq.end()){
-                    if(window_freq[s2[l]] == substr_freq[s2[l]])    matches++;
-                    else if(window_freq[s2[l]] == substr_freq[s2[l]] - 1)    matches--;
-                }
+                c = s2[l] - 'a';
+                window_freq[c]--;
+                if(window_freq[c] == substr_freq[c])    matches++;
+                else if(window_freq[c] == substr_freq[c] - 1)    matches--;
 
                 l++;
             }
-            return matches == substr_freq.size();
+            return matches == 26;
         }
 };
