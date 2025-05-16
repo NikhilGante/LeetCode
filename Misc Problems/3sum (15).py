@@ -1,30 +1,29 @@
 from typing import List
 from collections import defaultdict
 
-# class Solution:
-    
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        ans = []
+        for i in range(len(nums)):
+            if i and nums[i] == nums[i - 1]:
+                continue
 
-# nums.sort()
-# n = len(nums)
-# for i in range(n):
-#     if i and nums[i] == nums[i-1]:
-#         continue
-#     comp = -nums[i]
-#     l = i + 1
-#     r = n - 1
-#     while l < r:
-#         guess = nums[l] + nums[r]
-#         if guess == comp:
-#             ans.append([nums[i], nums[l], nums[r]])
-#             l += 1
-#             while nums[l] == nums[l - 1] and l < r:
-#                 l += 1
-#         elif guess < comp:
-#             l += 1
-#         else:
-#             r -= 1
+            l, r = i + 1, len(nums) - 1
 
-# return ans
+            target = -nums[i]
+            while l < r:
+                combined = nums[l] + nums[r]
+                if combined < target:
+                    l += 1
+                elif combined > target:
+                    r -= 1
+                else:
+                    ans.append([nums[i], nums[l], nums[r]]) # Don't break here, there can be more combinations
+                    l += 1
+                    while nums[l] == nums[l - 1] and l < r:
+                        l += 1
+        return ans
 
 # Suboptimal solution (with hashing)
 
