@@ -12,6 +12,18 @@ struct TreeNode {
 
 class Solution {
     public:
+        // log(n) time, log(n) space (recursive solution)
+        TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+            if(!root)   return nullptr;
+
+            int maximum = max(p->val, q->val), minimum = min(p->val, q->val);
+            if(root->val > maximum)    return lowestCommonAncestor(root->left, p, q);
+            if(root->val < minimum)     return lowestCommonAncestor(root->right, p, q);
+            return root;
+        }
+
+        // Naive Solution (0(n)) - but works for any tree, not just binarily sorted (somehow, this ran faster)
+        /*
         TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
             return get<0>(containsNodes(root, p, q));   
         }
@@ -30,4 +42,5 @@ class Solution {
     
             return {(has_p && has_q ? root : nullptr), has_p, has_q};
         }
+        */
 };
