@@ -13,6 +13,19 @@ struct TreeNode {
 
 class Solution {
     public:
+        // Top Down solution (better - exits as soon as tree is found to be invalid)
+        bool isValidBST(TreeNode* root) {
+            return dfs(root, LONG_MIN, LONG_MAX);
+        }
+
+        // track min of right and max of left
+        bool dfs(TreeNode* root, long left, long right){
+            if(!root)   return true;
+            if(root->val <= left || root->val >= right) return false;
+            return dfs(root->left, left, root->val) && dfs(root->right, root->val, right);
+        }
+
+    /*  // Bottom Up Solution (bad because it checks all n nodes before answering false)
         bool isValidBST(TreeNode* root) {
             return get<0>(dfs(root));
         }
@@ -31,5 +44,5 @@ class Solution {
             long long max_val = max((long long)root->val, max(get<2>(l), get<2>(r)));
             return {valid, min_val, max_val};
         }
-    
+    */
 };
