@@ -4,20 +4,18 @@ using namespace std;
 class Solution {
     public:
         vector<vector<int>> merge(vector<vector<int>>& intervals) {
+            ios::sync_with_stdio(false);
+            cin.tie(0);
+
             sort(intervals.begin(), intervals.end());
             vector<vector<int>> ans;
             ans.reserve(intervals.size());
-    
-            int cur_start = intervals[0][0], cur_end = intervals[0][1];
-            for(const auto& i: intervals){
-                if(i[0] <= cur_end) cur_end = max(cur_end, i[1]);   // Merge
-                else{   // Create new
-                    ans.push_back({cur_start, cur_end});
-                    cur_start = i[0], cur_end = i[1];
-                }
+            ans.push_back(intervals[0]);
+
+            for (int i = 1; i < intervals.size(); i++){
+                if(intervals[i][0] <= ans.back()[1])    ans.back()[1] = max(ans.back()[1], intervals[i][1]);   // Merge
+                else    ans.push_back(intervals[i]);    // Create new
             }
-            // Push last interval
-            if(ans.empty() || ans[ans.size() - 1][1] != cur_end)   ans.push_back({cur_start, cur_end});
             return ans;
         }
 };
