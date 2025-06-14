@@ -1,6 +1,22 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+// O(1) space solution
+class Solution {
+public:
+    int minCostClimbingStairs(vector<int>& cost) {
+        int a = 0, b = 0, temp = 0;
+        for(int i = 2; i < cost.size() + 1; i++){
+            temp = b;
+            b = min(cost[i - 1] + b, cost[i - 2] + a);
+            a = temp;
+        }
+        return b;
+    }
+};
+
+// O(n) space sol
+/*
 class Solution {
 public:
     int minCostClimbingStairs(vector<int>& cost) {
@@ -13,3 +29,4 @@ public:
         return ans[n];
     }
 };
+*/
