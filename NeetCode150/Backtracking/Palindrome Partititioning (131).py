@@ -1,25 +1,29 @@
 from typing import List
 
 class Solution:
-    def isPal(self, s: str) -> bool:
-        for c in range(len(s) // 2):
-            if s[c] != s[-c - 1]:
+    def isPal(self, s: str, l: int, r: int) -> bool:
+        while l < r:
+            if s[l] != s[r]:
                 return False
+            l += 1
+            r -= 1
         return True
 
-    def helper(self, s: str, arr: list): # dfs
-        if not s:
-            self.ans.append(arr.copy())
-            return
-        
-        for sub in range(1, len(s) + 1):
-            cur = s[:sub]
-            if self.isPal(cur):
-                arr.append(cur)
-                self.helper(s[sub::], arr)
-                arr.pop()
-
     def partition(self, s: str) -> List[List[str]]:
-        self.ans = []   # list of lists of strs
-        self.helper(s, [])
-        return self.ans
+        ans = []   # list of lists of strs
+        arr = []   # Current list to be appended
+        n = len(s)
+        def helper(i: int): # dfs
+            if i >= n:
+                ans.append(arr.copy())
+                return
+            
+            for sub in range(i, n):
+                cur = s[i : sub + 1]
+                if self.isPal(s, i, sub):
+                    arr.append(cur)
+                    helper(sub + 1)
+                    arr.pop()
+
+        helper(0)
+        return ans
