@@ -1,5 +1,25 @@
 from typing import List
 
+# Optimized using 2d bool arrays as hashmaps of hashsets
+class Solution:
+    def isValidSudoku(self, board: List[List[str]]) -> bool:
+        rows = [[False] * 9 for _ in range(9)]
+        cols = [[False] * 9 for _ in range(9)]
+        squares = [[False] * 9 for _ in range(9)]
+
+        for r in range(9):
+            for c in range(9):
+                if board[r][c] == '.':
+                    continue
+                cur = int(board[r][c]) - 1
+                
+                if rows[r][cur] or cols[c][cur] or squares[3*(r//3) + c//3][cur]:
+                    return False
+                
+                rows[r][cur] = cols[c][cur] = squares[3*(r//3) + c//3][cur] = True
+
+        return True
+    
 class Solution2:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
         s = set()
