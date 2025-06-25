@@ -10,7 +10,8 @@ public:
             if(trip[0] == a && trip[1] <= b && trip[2] <= c)    _a = true;
             if(trip[1] == b && trip[0] <= a && trip[2] <= c)    _b = true;
             if(trip[2] == c && trip[0] <= a && trip[1] <= b)    _c = true;
+            if(_a && _b && _c)  return true;
         }
-        return _a && _b && _c;
+        return false;
     }
 };
