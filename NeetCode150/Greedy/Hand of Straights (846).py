@@ -1,7 +1,33 @@
 from typing import List
+from collections import Counter
+import heapq
+
+# O(logn) solution
+class Solution:
+    def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
+        if len(hand) % groupSize:
+            return False
+        
+        # 2 cases we ret false - a) can't find target or b) when freq of value goes to 0 and val is not the min
+        freq = Counter(hand)
+        pq = list(freq.keys())
+        heapq.heapify(pq)        
+        while pq:
+            first = pq[0]
+            for target in range(first, first + groupSize):
+                if target not in freq:
+                    return False
+                freq[target] -= 1
+                if not freq[target]:
+                    if target != pq[0]: # b) when freq of value goes to 0 and val is not the min
+                        return False
+                    heapq.heappop(pq)
+
+        return True
+        
 
 
-# Suboptimal solution
+# Suboptimal solution (using ordered property of hashset)
 class Solution2:
     def isNStraightHand(self, hand: List[int], groupSize: int) -> bool:
         if len(hand) % groupSize:
