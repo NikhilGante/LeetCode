@@ -4,18 +4,17 @@ from typing import List
 class Solution:
     def coinChange(self, coins: List[int], amount: int) -> int:
         coins.sort()
-        dp = [-1] * (amount + 1)
+        dp = [amount + 1] * (amount + 1)
         dp[0] = 0
-        for num in range(amount + 1):
+        for num in range(1, amount + 1):
             for coin in coins:
                 if coin > num:
                     break
                 elif coin == num:
                     dp[num] = 1
-                elif dp[num - coin] != -1:
-                    dp[num] = dp[num - coin] + 1 if dp[num] == -1 else min(dp[num], dp[num - coin] + 1)
-        return dp[-1]
-
+                else:
+                    dp[num] = min(dp[num], 1 + dp[num - coin])
+        return -1 if dp[-1] == amount + 1 else dp[-1]
 
 # Top-down Memo Solution
 
