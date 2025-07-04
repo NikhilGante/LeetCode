@@ -17,3 +17,19 @@ class Solution:
             else:
                 return mid    
         return mid
+
+# Simpler but not logn I suppose
+class Solution2:
+    def findPeakElement(self, nums: List[int]) -> int:
+        l, r = 0, len(nums) - 1
+
+        while l <= r:
+            mid = (l + r) //2
+            if nums[r] > nums[mid]:
+                l = mid + 1
+            elif nums[l] > nums[mid]:
+                r = mid - 1
+            else:
+                r-=1
+        return mid
+ 
