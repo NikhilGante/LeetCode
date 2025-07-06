@@ -23,7 +23,7 @@ class Solution {
             return root;
         }
 
-        // 0(log(n)) time, O(log(n)) space (recursive solution)
+        // O(log(n)) time, O(log(n)) space (recursive solution)
         /*
         TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
             if(!root)   return nullptr;
