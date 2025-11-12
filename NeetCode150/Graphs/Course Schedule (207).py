@@ -1,26 +1,33 @@
 from typing import List
-
+    
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        path = set()
-        def dfs(node: int) -> bool:
-            if node in path:
+        # Should be able to finish all courses as long as there aren't cycles
+        adj = [[] for _ in range(numCourses)]
+        for crs, pre in prerequisites: # Need to take b before a
+            adj[crs].append(pre)
+
+        def dfs(node: int):
+            if path[node]:
                 return False
-            path.add(node)
-            for child in adj[node]:
-                if not dfs(child):
+            if vis[node]:   # if already visited, return immediately as this node already passed
+                return True
+
+            vis[node] = path[node] = True
+
+            for nei in adj[node]:
+                if not dfs(nei):
                     return False
-                
-            path.remove(node)
-            adj[node].clear()
+
+            # Unmark trail after processing (to allow other branches to reach this node without failing)
+            path[node] = False
             return True
 
-        adj = [[] for _ in range(numCourses)]
-        for pre in prerequisites: # Need to take b before a
-            adj[pre[0]].append(pre[1])
-
-        for node in range(len(adj)):
-            if not dfs(node):
+        vis = [False] * numCourses
+        path = [False] * numCourses # Which nodes we currently visit each cycle
+        
+        for crs in range(numCourses):
+            if not dfs(crs):
                 return False
 
         return True
