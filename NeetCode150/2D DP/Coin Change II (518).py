@@ -1,8 +1,28 @@
 from typing import List
 import heapq
 
-# O(n * m) time, O(m * n space), where n is amount, m is len(coins)
+
+# Space-optimized solution: O(m * n) time, O(m) space, where m is amount, n is len(coins)
 class Solution:
+    def change(self, amount: int, coins: List[int]) -> int:
+        # dp[r][c] -> (r -> are able to use coins[0 to r], c -> generate value c)
+        dp = [0] * (amount + 1)
+        dp[0] = 1        # 1 way to generate value of 0, use none of the coins
+
+        for r in range(len(coins)):
+            curCoin = coins[r]
+            prev = dp
+            dp[0] = 1        # 1 way to generate value of 0, use none of the coins
+            for c in range(1, amount + 1):
+                skip = prev[c]
+                include = dp[c - curCoin] if c >= curCoin else 0
+                dp[c] = skip + include
+
+        return  dp[-1]
+    
+
+# O(m * n) time, O(m * n) space, where m is amount, n is len(coins)
+class Solution2:
     def change(self, amount: int, coins: List[int]) -> int:
         # dp[r][c] -> (r -> are able to use coins[0 to r], c -> generate value c)
         dp = [[0] * (amount + 1) for _ in coins]
